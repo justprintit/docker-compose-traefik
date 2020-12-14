@@ -1,0 +1,16 @@
+# vim: set ft=yaml ts=2 sw=2 et:
+version: '3'
+services:
+
+  whoami:
+    container_name: @@NAME@@
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`@@HOSTNAME@@`)"
+    networks:
+      - @@TRAEFIK_BRIDGE@@
+
+networks:
+  @@TRAEFIK_BRIDGE@@:
+    external: true
