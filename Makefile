@@ -65,7 +65,7 @@ start: files
 	$(DOCKER_COMPOSE) up -d $(DOCKER_COMPOSE_UP_OPT)
 
 stop: files
-	$(DOCKER_COMPOSE) down
+	$(DOCKER_COMPOSE) down --remove-orphans
 
 restart: files
 	$(DOCKER_COMPOSE) restart
