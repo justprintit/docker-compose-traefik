@@ -14,14 +14,14 @@ CONFIG_MK = config.mk
 GEN_MK = gen.mk
 
 ifneq ($(PYGMENTIZE),)
-PIPE_COLOUR_YAML = | $(PYGMENTIZE) -l yaml
+COLOUR_YAML = $(PYGMENTIZE) -l yaml
 else
-PIPE_COLOUR_YAML =
+COLOUR_YAML = cat
 endif
 
 .PHONY: all files clean files pull build
 .PHONY: up start stop restart logs
-.PHONY: config
+.PHONY: config inspect
 ifneq ($(SHELL),)
 .PHONY: shell
 endif
@@ -79,4 +79,8 @@ shell: files
 endif
 
 config: files
-	$(DOCKER_COMPOSE) config $(PIPE_COLOUR_YAML)
+	$(DOCKER_COMPOSE) config | $(COLOUR_YAML)
+
+inspect:
+	$(DOCKER_COMPOSE) ps
+	$(DOCKER) network inspect -v $(TRAEFIK_BRIDGE) | $(COLOUR_YAML)
