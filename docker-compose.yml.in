@@ -2,12 +2,12 @@
 version: '3'
 services:
 
-  whoami:
-    container_name: @@NAME@@
+  @@NAME@@:
+    container_name: whoami
     image: traefik/whoami
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`@@HOSTNAME@@`)"
+      - "traefik.http.routers.@@NAME@@.rule=Host(`@@HOSTNAME@@`)"
     networks:
       - @@TRAEFIK_BRIDGE@@
 
