@@ -1,6 +1,8 @@
 DOCKER ?= docker
 DOCKER_COMPOSE ?= docker-compose
 
+PYGMENTIZE ?= $(shell which pygmentize)
+
 DOCKER_COMPOSE_UP_OPT =
 
 GEN_MK_VARS = TRAEFIK_BRIDGE NAME HOSTNAME
@@ -11,8 +13,15 @@ SHELL = /bin/sh
 CONFIG_MK = config.mk
 GEN_MK = gen.mk
 
+ifneq ($(PYGMENTIZE),)
+PIPE_COLOUR_YAML = | $(PYGMENTIZE) -l yaml
+else
+PIPE_COLOUR_YAML =
+endif
+
 .PHONY: all files clean files pull build
 .PHONY: up start stop restart logs
+.PHONY: config
 ifneq ($(SHELL),)
 .PHONY: shell
 endif
@@ -68,3 +77,6 @@ ifneq ($(SHELL),)
 shell: files
 	$(DOCKER_COMPOSE) exec $(NAME) $(SHELL)
 endif
+
+config: files
+	$(DOCKER_COMPOSE) config $(PIPE_COLOUR_YAML)
