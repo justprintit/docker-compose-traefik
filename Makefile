@@ -5,8 +5,6 @@ PYGMENTIZE ?= $(shell which pygmentize)
 
 DOCKER_COMPOSE_UP_OPT =
 
-GEN_MK_VARS = TRAEFIK_BRIDGE NAME HOSTNAME
-
 FILES = docker-compose.yml
 SHELL = /bin/sh
 
@@ -18,6 +16,10 @@ COLOUR_YAML = $(PYGMENTIZE) -l yaml
 else
 COLOUR_YAML = cat
 endif
+
+TPL = $(addsuffix .in, $(FILES))
+DEPS = $(CURDIR)/get_vars.sh $(TPL) Makefile
+GEN_MK_VARS = $(shell $(CURDIR)/get_vars.sh $(TPL))
 
 .PHONY: all files clean files pull build
 .PHONY: up start stop restart logs
@@ -39,11 +41,11 @@ clean:
 	done
 	touch $@
 
-$(GEN_MK): $(CURDIR)/gen_mk.sh Makefile
+$(GEN_MK): $(CURDIR)/gen_mk.sh $(DEPS)
 	$< $(GEN_MK_VARS) > $@~
 	mv $@~ $@
 
-$(CONFIG_MK): $(CURDIR)/config_mk.sh Makefile
+$(CONFIG_MK): $(CURDIR)/config_mk.sh $(DEPS)
 	$< $@ $(GEN_MK_VARS)
 	touch $@
 
