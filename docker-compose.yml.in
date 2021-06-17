@@ -2,12 +2,20 @@
 version: '3'
 services:
 
-  @@NAME@@:
-    container_name: whoami
-    image: traefik/whoami
+  cms:
+    container_name: cms
+    image: @@IMAGE@@
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.@@NAME@@.rule=Host(`@@HOSTNAME@@`)"
+      - "traefik.http.services.@@NAME@@.loadbalancer.server.port=8080"
+    volumes:
+      - "./etc/secrets:/etc/secrets"
+      - "@@BINDIR@@:/bin"
+      - "@@DATADIR@@:/data"
+      - "./etc/modd-cms.conf:/etc/modd.conf"
+    env_file:
+      - cms.env
     networks:
       - @@TRAEFIK_BRIDGE@@
 
