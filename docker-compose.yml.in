@@ -10,7 +10,6 @@ services:
       - "traefik.http.routers.@@NAME@@.rule=Host(`@@HOSTNAME@@`)"
       - "traefik.http.services.@@NAME@@.loadbalancer.server.port=8080"
     volumes:
-      - "./etc/secrets:/etc/secrets"
       - "@@BINDIR@@:/bin"
       - "@@DATADIR@@:/data"
       - "./etc/modd-cms.conf:/etc/modd.conf"
