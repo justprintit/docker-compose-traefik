@@ -17,7 +17,24 @@ services:
       - cms.env
     networks:
       - @@TRAEFIK_BRIDGE@@
+      - default
+
+  auth:
+    container_name: auth
+    image: @@IMAGE@@
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.@@NAME@@-auth.rule=Host(`@@HOSTNAME@@`) && Path(`/o`)"
+      - "traefik.http.services.@@NAME@@-auth.loadbalancer.server.port=8080"
+    volumes:
+      - "@@BINDIR@@:/bin"
+      - "@@DATADIR@@:/data"
+      - "./etc/modd-auth.conf:/etc/modd.conf"
+    networks:
+      - @@TRAEFIK_BRIDGE@@
+      - default
 
 networks:
   @@TRAEFIK_BRIDGE@@:
     external: true
+  default:
