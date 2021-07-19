@@ -6,7 +6,7 @@ services:
     image: @@IMAGE@@
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.@@NAME@@.rule=Host(`@@HOSTNAME@@`,`www.@@HOSTNAME@@`)"
+      - "traefik.http.routers.@@NAME@@.rule=Host(`@@HOSTNAME@@`)"
       - "traefik.http.services.@@NAME@@.loadbalancer.server.port=8080"
     volumes:
       - "@@BINDIR@@:/bin"
