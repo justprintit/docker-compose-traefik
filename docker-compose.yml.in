@@ -22,7 +22,7 @@ services:
     image: @@IMAGE@@
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.@@NAME@@-auth.rule=Host(`@@HOSTNAME@@`) && PathPrefix(`/o`, `/o/`)"
+      - "traefik.http.routers.@@NAME@@-auth.rule=Host(`@@HOSTNAME@@`) && PathPrefix(`/o/auth`)"
       - "traefik.http.services.@@NAME@@-auth.loadbalancer.server.port=8080"
     volumes:
       - "@@BINDIR@@:/bin"
